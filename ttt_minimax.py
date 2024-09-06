@@ -1,8 +1,9 @@
-board = {   1:' ', 2:' ', 3:' ',
-            4:' ', 5:' ', 6:' ',
-            7:' ', 8:' ', 9:' '}
-
-def printBoard(board):
+board={1:' ', 2:' ', 3:' ',
+       4:' ', 5:' ', 6:' ',
+       7:' ', 8:' ', 9:' '}
+player="O"
+bot="X"
+def printBoard():
     print(board[1]+' | '+board[2]+' | '+board[3])
     print('- + - + -')
     print(board[4]+' | '+board[5]+' | '+board[6])
@@ -10,20 +11,20 @@ def printBoard(board):
     print(board[7]+' | '+board[8]+' | '+board[9])
     print('\n')
 
-        
-def spaceIsFree(position):
-    if(board[position]==' '):
+def isEmpty(position):
+    if board[position]==' ':
         return True
-    else:
-        return False
-    
-def checkForDraw():
+    return False
+
+def checkDraw():
     for key in board.keys():
         if board[key]==' ':
             return False
     return True
 
-def checkForWin():
+
+
+def checkWin():
     if(board[1]==board[2]==board[3] and board[1]!=' '):
         return True
     elif(board[4]==board[5]==board[6] and board[4]!=' '):
@@ -43,7 +44,47 @@ def checkForWin():
     else:
         return False
     
-def checkWhichMarkWon(mark):
+def insertMove(letter,position):
+    if isEmpty(position):
+        board[position]=letter
+        printBoard()
+        if checkWin():
+            if letter==player:
+                print("player won!")
+                exit()
+            else:
+                print("bot won!")
+                exit()
+        if checkDraw():
+            print("Draw")
+            exit()
+    else:
+        print("this position is filled\n")
+        position=int(input("Enter your position again:\n"))
+        insertMove(letter,position)
+    
+
+def playerMove():
+    position=int(input("Enter the position where you want to place O (1-9):\n"))
+    insertMove(player,position)
+    return
+
+def compMove():
+    bestScore=100
+    bestPosition=0
+    for key in board.keys():
+        if(board[key]==' '):
+            board[key]=bot
+            score=minimax(board,False)
+            board[key]=' '
+            if score<bestScore:
+                bestScore=score
+                bestPosition=key
+    insertMove(bot,bestPosition)
+    return
+        
+
+def checkMarks(mark):
     if(board[1]==board[2]==board[3] and board[1]==mark):
         return True
     elif(board[4]==board[5]==board[6] and board[4]==mark):
@@ -63,84 +104,36 @@ def checkWhichMarkWon(mark):
     else:
         return False
 
-
-
-def insertLetter(letter,position):
-    if spaceIsFree(position):
-        board[position]=letter
-        printBoard(board)
-        if checkForWin():
-            if letter== "X":
-                print("Bot wins!")
-                exit()
-            else:
-                print("Player wins!")
-                exit()
-        if checkForDraw():
-            print("Draw!")
-            exit()
-
-    else:
-        print("Can't insert there!")
-        position=int(input("Enter new position"))
-        insertLetter(letter,position)
-        return
-player= 'O'
-bot='X'
-
-def playerMove():
-    position=int(input("Enter the position for O: "))
-    insertLetter(player,position)
-    return
-
-def compMove():
-    bestScore= 800
-    bestMove=0
-    for key in board.keys():
-        if(board[key]==' '):
-            board[key]=bot
-            score=minimax(board,0,False)
-            board[key]=' '
-            if(score<bestScore):
-                bestScore=score
-                bestMove=key
-    insertLetter(bot,bestMove)
-    return
-
-def minimax(board,depth,isMaximizing):
-    if checkWhichMarkWon(player):
+def minimax(board,isMaximizing):
+    if checkMarks(player):
         return 1
-    elif checkWhichMarkWon(bot):
+    elif checkMarks(bot):
         return -1
-    elif checkForDraw():
+    elif checkDraw():
         return 0
     if isMaximizing:
-            bestScore= 800
-            for key in board.keys():
-                if(board[key]==' '):
-                    board[key]=bot
-                    score=minimax(board,0,False)
-                    board[key]=' '
-                    if(score<bestScore):
-                        bestScore=score
-            return bestScore
+        bestScore=100
+        for key in board.keys():
+            if(board[key]==' '):
+                board[key]=bot
+                score=minimax(board,False)
+                board[key]=' '
+                if score<bestScore:
+                    bestScore=score
+        return bestScore
     else:
-        bestScore=-800
+        bestScore=-100
         for key in board.keys():
             if(board[key]==' '):
                 board[key]=player
-                score=minimax(board,depth+1,True)
+                score=minimax(board,True)
                 board[key]=' '
-                if(score>bestScore):
+                if score>bestScore:
                     bestScore=score
         return bestScore
-    
-turn=int(input("Welcome to Tic-Tac-Toe! Enter 1 if you want to go first, 2 if you want to go second:\n"))
-printBoard(board)
-while not checkForWin():
-   if turn==2:
-       compMove()
-       playerMove()
-   else:
-       playerMove()
-       compMove()
+
+printBoard()
+while(not checkWin()):
+    playerMove()
+    compMove()
+

@@ -94,44 +94,44 @@ def playerMove():
     return
 
 def compMove():
-    bestScore= -800
+    bestScore= 800
     bestMove=0
     for key in board.keys():
         if(board[key]==' '):
             board[key]=bot
             score=minimax(board,0,False)
             board[key]=' '
-            if(score>bestScore):
+            if(score<bestScore):
                 bestScore=score
                 bestMove=key
     insertLetter(bot,bestMove)
     return
 
 def minimax(board,depth,isMaximizing):
-    if checkWhichMarkWon(bot):
+    if checkWhichMarkWon(player):
         return 1
-    elif checkWhichMarkWon(player):
+    elif checkWhichMarkWon(bot):
         return -1
     elif checkForDraw():
         return 0
     if isMaximizing:
-            bestScore= -800
+            bestScore= 800
             for key in board.keys():
                 if(board[key]==' '):
                     board[key]=bot
                     score=minimax(board,0,False)
                     board[key]=' '
-                    if(score>bestScore):
+                    if(score<bestScore):
                         bestScore=score
             return bestScore
     else:
-        bestScore=800
+        bestScore=-800
         for key in board.keys():
             if(board[key]==' '):
                 board[key]=player
                 score=minimax(board,depth+1,True)
                 board[key]=' '
-                if(score<bestScore):
+                if(score>bestScore):
                     bestScore=score
         return bestScore
     

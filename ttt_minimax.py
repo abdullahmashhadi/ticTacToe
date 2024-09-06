@@ -88,12 +88,12 @@ def insertLetter(letter,position):
 player= 'O'
 bot='X'
 
-def playerMoveSecond():
+def playerMove():
     position=int(input("Enter the position for O: "))
     insertLetter(player,position)
     return
 
-def compMoveFirst():
+def compMove():
     bestScore= -800
     bestMove=0
     for key in board.keys():
@@ -107,26 +107,6 @@ def compMoveFirst():
     insertLetter(bot,bestMove)
     return
 
-
-def compMoveSecond():
-    bestScore= -800
-    bestMove=0
-    for key in board.keys():
-        if(board[key]==' '):
-            board[key]=bot
-            score=minimax(board,0,False)
-            board[key]=' '
-            if(score>bestScore):
-                bestScore=score
-                bestMove=key
-    insertLetter(bot,bestMove)
-    return
-
-def playerMoveFirst():
-    position=int(input("Enter the position for O: "))
-    insertLetter(player,position)
-    return
-#omment
 def minimax(board,depth,isMaximizing):
     if checkWhichMarkWon(bot):
         return 1
@@ -155,15 +135,12 @@ def minimax(board,depth,isMaximizing):
                     bestScore=score
         return bestScore
     
-
-
-
 turn=int(input("Welcome to Tic-Tac-Toe! Enter 1 if you want to go first, 2 if you want to go second:\n"))
 printBoard(board)
 while not checkForWin():
    if turn==2:
-       compMoveFirst()
-       playerMoveSecond()
+       compMove()
+       playerMove()
    else:
-       playerMoveFirst()
-       compMoveSecond()
+       playerMove()
+       compMove()

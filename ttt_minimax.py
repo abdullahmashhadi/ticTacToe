@@ -126,7 +126,7 @@ def playerMoveFirst():
     position=int(input("Enter the position for O: "))
     insertLetter(player,position)
     return
-
+#omment
 def minimax(board,depth,isMaximizing):
     if checkWhichMarkWon(bot):
         return 1

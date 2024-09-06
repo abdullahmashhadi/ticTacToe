@@ -28,7 +28,7 @@ def checkDraw():
 def checkWin():
     winning_combinations=[[1,2,3],[4,5,6],[7,8,9],[1,5,9],[3,5,7],[1,4,7],[2,5,8],[3,6,9]]
     for combination in winning_combinations:
-        if combination[0]==combination[1]==combination[2] and combination[0]!=' ':
+        if board[combination[0]]==board[combination[1]]==board[combination[2]] and board[combination[0]]!=' ':
             return True
     return False
     

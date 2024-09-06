@@ -1,8 +1,11 @@
 board={1:' ', 2:' ', 3:' ',
        4:' ', 5:' ', 6:' ',
        7:' ', 8:' ', 9:' '}
+
 player="O"
 bot="X"
+
+
 def printBoard():
     print(board[1]+' | '+board[2]+' | '+board[3])
     print('- + - + -')
@@ -22,27 +25,12 @@ def checkDraw():
             return False
     return True
 
-
-
 def checkWin():
-    if(board[1]==board[2]==board[3] and board[1]!=' '):
-        return True
-    elif(board[4]==board[5]==board[6] and board[4]!=' '):
-        return True
-    elif(board[7]==board[8]==board[9] and board[7]!=' '):
-        return True
-    elif(board[1]==board[5]==board[9] and board[1]!=' '):
-        return True
-    elif(board[3]==board[5]==board[7] and board[3]!=' '):
-        return True
-    elif(board[1]==board[4]==board[7] and board[1]!=' '):
-        return True
-    elif(board[2]==board[5]==board[8] and board[2]!=' '):
-        return True
-    elif(board[3]==board[6]==board[9] and board[3]!=' '):
-        return True
-    else:
-        return False
+    winning_combinations=[[1,2,3],[4,5,6],[7,8,9],[1,5,9],[3,5,7],[1,4,7],[2,5,8],[3,6,9]]
+    for combination in winning_combinations:
+        if combination[0]==combination[1]==combination[2] and combination[0]!=' ':
+            return True
+    return False
     
 def insertMove(letter,position):
     if isEmpty(position):
@@ -85,24 +73,11 @@ def compMove():
         
 
 def checkMarks(mark):
-    if(board[1]==board[2]==board[3] and board[1]==mark):
-        return True
-    elif(board[4]==board[5]==board[6] and board[4]==mark):
-        return True
-    elif(board[7]==board[8]==board[9] and board[7]==mark):
-        return True
-    elif(board[1]==board[5]==board[9] and board[1]==mark):
-        return True
-    elif(board[3]==board[5]==board[7] and board[3]==mark):
-        return True
-    elif(board[1]==board[4]==board[7] and board[1]==mark):
-        return True
-    elif(board[2]==board[5]==board[8] and board[2]==mark):
-        return True
-    elif(board[3]==board[6]==board[9] and board[3]==mark):
-        return True
-    else:
-        return False
+    winning_combinations=[[1,2,3],[4,5,6],[7,8,9],[1,5,9],[3,5,7],[1,4,7],[2,5,8],[3,6,9]]
+    for combination in winning_combinations:
+        if board[combination[0]]==board[combination[1]]==board[combination[2]] and board[combination[0]]==mark:
+            return True
+    return False
 
 def minimax(board,isMaximizing):
     if checkMarks(player):
